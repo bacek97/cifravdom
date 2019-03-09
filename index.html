@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en" >
 
 <head>
   <title>Цифра в дом</title>
@@ -27,136 +27,64 @@
 
 <body>
 
-  <div id="vm">
-  <keep-alive>
-    <router-view ref="routerView"></router-view>
-  </keep-alive>
-  <b-link to="/language/component">Lang tst</b-link>
-  
-  <b-link to="/ru/component">Component test</b-link>
-<!--   <component-x ref="componentX"></component-x> -->
-</div>
+  <div id="vm"></div>
 
 <script type="text/x-template" id="componentRoot">
-  <div >
-    
-    
-      <b-navbar toggleable="md" type="dark" variant="dark" fixed="top" v-b-scrollspy="150" >
+<div style="padding-top: 56px;" class="container">
+
+ <b-navbar toggleable="sm" type="dark" variant="dark" v-b-scrollspy="60" fixed="top" >
     <b-navbar-brand href="#">Цифра в Дом</b-navbar-brand>
 
     <b-navbar-toggle target="nav_collapse" />
 
     <b-collapse is-nav id="nav_collapse">
 
-      <!-- Right aligned nav items -->
       <b-navbar-nav  class="ml-auto">
-        <b-nav-item href="#fat">@Видеонаблюдение</b-nav-item>
-        <b-nav-item href="#mdo" @click="scrollIntoView">@Эл. замки</b-nav-item>
-        <b-nav-item-dropdown text="@Управление со смартфона" right-alignment>
-          <b-dropdown-item href="#one" @click="scrollIntoView">one</b-dropdown-item>
-          <b-dropdown-item href="#two" @click="scrollIntoView">two</b-dropdown-item>
-          <b-dropdown-divider />
-          <b-dropdown-item href="#three" @click="scrollIntoView">three</b-dropdown-item>
-        </b-nav-item-dropdown>
-        <b-nav-item href="#pi0" @click="scrollIntoView">@Автоматические ворота</b-nav-item>
-        <b-nav-item-dropdown :text="$t($i18n.locale)" right>
+        <b-nav-item href="#Catalog" @click="scrollIntoView">Каталог</b-nav-item>
+        <b-nav-item href="#Ceny" @click="scrollIntoView">Цены</b-nav-item>
+        
+        <b-nav-item href="#Portfolio" @click="scrollIntoView">Портфолио</b-nav-item>
+<!--         <b-nav-item-dropdown :text="$t($i18n.locale)" right>
           <b-dd-item v-for="item in availableLanguages" :to="{ name: $route.name, params: { language: item }, query: $route.query}" :key="item" v-text="$t(item)"></b-dd-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-    </b-collapse>
+  </b-nav-item-dropdown> -->
+  </b-navbar-nav>
+  </b-collapse>
   </b-navbar>
-  <div class="container pt-5 mt-5">
-    <b-jumbotron>
-    <template slot="header">Цифра в дом</template>
+   <h4 id="Catalog">Каталог</h4>
+    <b-card no-body>
+      <b-tabs card pills vertical>
+        <b-tab v-for="rows in gtob(GTable.one.Каталог.items)" :title="rows[0][0]">
+          <div class="d-flex flex-wrap justify-content-around">
+    <b-card v-for="row in rows" :header="row[1]" :img-src="row[3]" img-alt="Image" img-top style="max-width:9rem" class="m-1">
+      <b-card-text v-text="row[2]"/>
+    </b-card>
 
-    <template slot="lead">
-      Установка под ключ
-    </template>
-
-    <hr class="my-4" />
-
-    <p>
-      Мы сделаем всё за вас
-    </p>
-
-    <b-button variant="primary" href="#">Хорошо</b-button>
-    <b-button variant="success" href="#">Замечательно</b-button>
-  </b-jumbotron>
-    <hr class="my-4" />
-        <h4 id="fat" v-text='$t("video1")'></h4>
-        <b-carousel
-      id="car2"
-      style="text-shadow: 1px 1px 2px #333;"
-      controls
-      indicators
-      background="#ababab"
-      :interval="5000"
-      img-width="1024"
-      img-height="480"
-      v-model="slide2"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
-      <!-- Text slides with image -->
-      <b-carousel-slide
-        caption="Видеонаблюдение"
-        text="Установка под ключ"
-        img-src="https://img02.flagma.ru/photo/videonablyudenie-montazh-obsluzhivanie-3512700_big.jpg"
-      />
-
-      <!-- Slides with custom text -->
-      <b-carousel-slide img-src="https://img02.flagma.ru/photo/videonablyudenie-montazh-obsluzhivanie-3512700_big.jpg">
-        <h1>Hello world!</h1>
-      </b-carousel-slide>
-
-      <!-- Slides with image only -->
-      <b-carousel-slide img-src="https://img02.flagma.ru/photo/videonablyudenie-montazh-obsluzhivanie-3512700_big.jpg" />
-
-      <!-- Slides with img slot -->
-      <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-      <b-carousel-slide>
-        <img
-          slot="img"
-          class="d-block img-fluid w-100"
-          width="1024"
-          height="480"
-          src="https://picsum.photos/1024/480/?image=55"
-          alt="image slot"
-        />
-      </b-carousel-slide>
-
-      <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-      <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt
-          a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
-        </p>
-      </b-carousel-slide>
-    </b-carousel>
-        <p v-text='$t("video2")'></p>
-        <h4 id="mdo">@mdo</h4>
-        <p v-for="i in 3">{{ text }}</p>
-        <h4 id="one">one</h4>
-        <p v-for="i in 2">{{ text }}</p>
-        <h4 id="two">two</h4>
-        <p>{{ text }}</p>
-        <h4 id="three">three</h4>
-        <p v-for="i in 2">{{ text }}</p>
-        <h4 id="pi0">@pi0</h4>
-        <p v-for="i in 3">{{ text }}</p>
-    <keep-alive>
-      <router-view ref="routerView"></router-view>
-     </keep-alive>
+  </div>
+        </b-tab>
+      </b-tabs>
+    </b-card>
+    <div>
+    <h4 id="Ceny">Цены</h4>
+    <b-table selectable striped hover v-for="(value, key) in GTable.two" :id="key" :fields="value.fields" :items="value.items"><template slot="thead-top" slot-scope="data">
+        <tr>
+          <th colspan="2" v-text="key"></th>
+        </tr>
+      </template></b-table>
     </div>
+  <keep-alive>
+      <router-view ref="Catalog"></router-view>
+  </keep-alive>
   </div>
 </script>
 
 <script type="text/x-template" id="componentX">
-  <div>
-      <p>{{$route.fullPath}}</p>
+<div>
+  
+  asd
   </div>
 </script>
-    <script  src="js/index.js"></script>
+  
+    <script src="js/index.js"></script>
 
 
 

@@ -1,15 +1,16 @@
 var t0 = performance.now();
 const toUrlEncoded = (obj) => Object.keys(obj).map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&')
 
+
+
 const fallbackLocale = 'ru'
 const redirect = `/${fallbackLocale}/componentx`
 
-
-
-
-
-
-
+function unique(arr) {
+  var obj = {};
+  arr.forEach((asd) => obj[asd[0]] = true)
+  return Object.keys(obj); // или собрать ключи перебором для IE8-
+}
 
 const componentX = () => Promise.resolve({
   template: '#componentX',
@@ -49,6 +50,12 @@ const componentLang = () => Promise.resolve({
   
   data() {
     return {
+      tablica1: [
+          { isActive: true, age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+          { isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+          { isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson' },
+          { isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney' }
+        ],
        text: `
           Quis magna Lorem anim amet ipsum do mollit sit cillum voluptate ex nulla
           tempor. Laborum consequat non elit enim exercitation cillum aliqua
@@ -64,13 +71,34 @@ const componentLang = () => Promise.resolve({
       loadedLanguages: [],
       slide: 0,
       slide2: 0,
-      sliding: null
+      sliding: null,
+      GTable: { one: null, two: null }
     }
   },
   created() {
     this.$root.$on('bv::scrollspy::activate', this.onActivate)
+    this.gGTable()
   },
   methods: {
+    gtob(arr) {
+var obj = {}
+arr.forEach(function(row, i) {if (!obj[row[0]]) obj[row[0]]=[]; obj[row[0]].push(row)})
+return obj
+},
+    gGTable() {
+			axios
+				.all(
+					[ "https://script.google.com/macros/s/AKfycbz8lmBQ9bZyZp1pHA4eBARNS5LePfe0ThNFp1J9-0RA3vCpngTA/exec", "https://script.google.com/macros/s/AKfycbwfFzuMz7_LmAjKmCZk3B3QS9BZTXLK-JLi79zY8TOTqyrbEjo/exec", "https://api.vk.com/method/photos.get?owner_id=-58528824&v=5.92&album_id=228741307&access_token=3038692d3038692d3038692d5a300e7c7e330383038692d6cbb86b2e66a0ea7510a1261"
+					].map(axios.get)
+				)
+				.then(
+					axios.spread((one, two, vk) => {
+						this.$set(this.GTable, 'one', one.data.Каталог)
+						this.$set(this.GTable, 'two', two.data.Цены)
+						this.$set(this.GTable, 'vk', vk.data)
+					})
+				)
+		},
     onActivate(target) {
       console.log('Receved Event: scrollspy::activate for target ', target)
     },
@@ -79,7 +107,7 @@ const componentLang = () => Promise.resolve({
         const href = evt.target.getAttribute('href')
         const el = href ? document.querySelector(href) : null
         if (el) {
-          document.documentElement.scrollTop = el.offsetTop
+          document.documentElement.scrollTop = el.offsetTop-56
         }
       },
     onSlideStart(slide) {
@@ -145,7 +173,10 @@ const vm = new Vue({
       { path: '/boomerang/*', redirect: '/' }, //HTML5_History - CodePen.io/pen
       { path: '/', redirect }, //HTML5_History - CodePen.io/debug
       { path: '/:language', component: componentLang, children: [
-        { path: 'componentx', name: 'componentx', component: componentX },
+        { path: 'componentx', name: 'componentx', component: componentX, children: [
+          { path: ':tovar', name: 'tovar', component: { template: '<div>404 - now path: {{$route.fullPath}} </div>' } },
+        ],
+        },
         { path: '404', name: 'componenty', component: { template: '<div>404 - now path: {{$route.fullPath}} </div>' } },
         { path: '*', redirect: '404' }
         ] },
@@ -180,7 +211,8 @@ const vm = new Vue({
       }
       return window.scrollY > 100
     }
-  }
+  },
+  template: `<keep-alive><router-view ref="routerView"></router-view></keep-alive>`
 }).$mount('#vm')
 var t1 = performance.now();
 console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
