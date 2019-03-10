@@ -11,76 +11,15 @@ function callbackVK(result) {
 }
 
 
-const fallbackLocale = 'ru'
-const redirect = `/${fallbackLocale}/componentx`
-
-function unique(arr) {
-  var obj = {};
-  arr.forEach((asd) => obj[asd[0]] = true)
-  return Object.keys(obj); // или собрать ключи перебором для IE8-
-}
-
-const componentX = () => Promise.resolve({
-  template: '#componentX',
-  data() {
-    return {
-      text: "abc"
-    }
-  },
-  created() {
-  },
-  methods: {  },
-  beforeRouteEnter (to, from, next) {
-    next(componentx => {
-    } )
-  },
-  beforeRouteUpdate (to, from, next) {
-    // обрабатываем изменение параметров маршрута...
-    // не забываем вызвать next()
-    next()
-  }
-})
-
 const componentLang = () => Promise.resolve({
   template: '#componentRoot',
-  beforeRouteEnter(to, from, next) {
-    next((component) => {
-      component.getLang(component.$i18n.fallbackLocale)
-      if (~component.availableLanguages.indexOf(to.params.language)) {  component.getLang(to.params.language) } else { alert(component.$t('lang404')); next(redirect) }
-    })
-  },
-  beforeRouteUpdate(to, from, next) {
-    next(~this.availableLanguages.indexOf(to.params.language)
-      ? (this.getLang(to.params.language), true )
-      : (alert(this.$t('lang404')), false) )
-    
-  },
   
   data() {
     return {
-      tablica1: [
-          { isActive: true, age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-          { isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-          { isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-          { isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney' }
-        ],
-       text: `
-          Quis magna Lorem anim amet ipsum do mollit sit cillum voluptate ex nulla
-          tempor. Laborum consequat non elit enim exercitation cillum aliqua
-          consequat id aliqua. Esse ex consectetur mollit voluptate est in duis
-          laboris ad sit ipsum anim Lorem. Incididunt veniam velit elit elit veniam
-          Lorem aliqua quis ullamco deserunt sit enim elit aliqua esse irure. Laborum
-          nisi sit est tempor laborum mollit labore officia laborum excepteur
-          commodo non commodo dolor excepteur commodo. Ipsum fugiat ex est consectetur
-          ipsum commodo tempor sunt in proident.
-        `,
-      
-      availableLanguages: ['ru','en'],
-      loadedLanguages: [],
       slide: 0,
       slide2: 0,
       sliding: null,
-      GTable: { one: null, two: null }
+      GTable: {}
     }
   },
   created() {
@@ -175,25 +114,7 @@ Vue.directive('scroll', {
 
 // new Vue({
 const vm = new Vue({
-  router: new VueRouter({
-    mode: 'history',
-    routes: [
-      // { path: '/foo', component: { template: '#component1', components: { 'component-x': componentX } } },
-      { path: '/bacek97/*', redirect: '/' }, //HTML5_History - CodePen.io/full
-      { path: '/boomerang/*', redirect: '/' }, //HTML5_History - CodePen.io/pen
-      { path: '/', redirect }, //HTML5_History - CodePen.io/debug
-      { path: '/:language', component: componentLang, children: [
-        { path: 'componentx', name: 'componentx', component: componentX, children: [
-          { path: ':tovar', name: 'tovar', component: { template: '<div>404 - now path: {{$route.fullPath}} </div>' } },
-        ],
-        },
-        { path: '404', name: 'componenty', component: { template: '<div>404 - now path: {{$route.fullPath}} </div>' } },
-        { path: '*', redirect: '404' }
-        ] },
-    ]
-  }),
-  i18n: new VueI18n({ fallbackLocale }),
-  // components: { componentX  },  // 'component-x': componentX   // <component-x></component-x>
+  components: { componentLang  },  // 'component-x': componentX   // <component-x></component-x>
   data() {
     return {
       object: {
@@ -222,7 +143,7 @@ const vm = new Vue({
       return window.scrollY > 100
     }
   },
-  template: `<keep-alive><router-view ref="routerView"></router-view></keep-alive>`
+  template: `<component-lang></component-lang>`
 }).$mount('#vm')
 var t1 = performance.now();
 console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
