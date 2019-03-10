@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" >
+<html>
 
 <head>
   <title>Цифра в дом</title>
@@ -42,8 +42,8 @@
       <b-navbar-nav  class="ml-auto">
         <b-nav-item href="#Catalog" @click="scrollIntoView">Каталог</b-nav-item>
         <b-nav-item href="#Ceny" @click="scrollIntoView">Цены</b-nav-item>
-        
         <b-nav-item href="#Portfolio" @click="scrollIntoView">Портфолио</b-nav-item>
+        <b-nav-item href="#Contacts" @click="scrollIntoView">Контакты</b-nav-item>
 <!--         <b-nav-item-dropdown :text="$t($i18n.locale)" right>
           <b-dd-item v-for="item in availableLanguages" :to="{ name: $route.name, params: { language: item }, query: $route.query}" :key="item" v-text="$t(item)"></b-dd-item>
   </b-nav-item-dropdown> -->
@@ -71,23 +71,38 @@
         </tr>
       </template></b-table>
     </div>
+  <b-carousel id="Portfolio"
+    indicators
+    controls
+  >
+    <b-carousel-slide v-for="item in vk().response.items" :text="item.text" :img-src="item.sizes[2].url" />
+  </b-carousel>
+  
+  		<div id="Contacts" class="row bg-dark text-white mt-3">
+<!-- 			<hr class="clearfix w-100 d-sm-none pb-3" /> -->
+			<div v-for="(item, index) in GTable.one.Footer.fields" class="col-sm mt-1">
+				<!-- Links -->
+				<h5 class="text-uppercase" v-text="item.label"></h5>
+
+				<ul class="list-unstyled">
+					<li v-for="cell in GTable.one.Footer.items[index]" v-text="cell"></li>
+				</ul>
+			</div>
+			<!-- Grid column -->
+		</div>
+  
   <keep-alive>
       <router-view ref="Catalog"></router-view>
   </keep-alive>
   </div>
-</script>
+
+ </script>
 
 <script type="text/x-template" id="componentX">
-<div>
-  
-  asd
-  </div>
+<div></div>
 </script>
-  
+
     <script src="js/index.js"></script>
-
-
-
 
 </body>
 

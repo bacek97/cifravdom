@@ -1,6 +1,14 @@
 var t0 = performance.now();
 const toUrlEncoded = (obj) => Object.keys(obj).map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&')
 
+var vk
+var script = document.createElement('SCRIPT');
+script.src = "https://api.vk.com/method/photos.get?owner_id=-58528824&v=5.92&album_id=228741307&access_token=3038692d3038692d3038692d5a300e7c7e330383038692d6cbb86b2e66a0ea7510a1261&callback=callbackVK";
+document.getElementsByTagName("head")[0].appendChild(script);
+
+function callbackVK(result) {
+  vk = result
+}
 
 
 const fallbackLocale = 'ru'
@@ -80,6 +88,7 @@ const componentLang = () => Promise.resolve({
     this.gGTable()
   },
   methods: {
+    vk() { return vk },
     gtob(arr) {
 var obj = {}
 arr.forEach(function(row, i) {if (!obj[row[0]]) obj[row[0]]=[]; obj[row[0]].push(row)})
@@ -88,7 +97,8 @@ return obj
     gGTable() {
 			axios
 				.all(
-					[ "https://script.google.com/macros/s/AKfycbz8lmBQ9bZyZp1pHA4eBARNS5LePfe0ThNFp1J9-0RA3vCpngTA/exec", "https://script.google.com/macros/s/AKfycbwfFzuMz7_LmAjKmCZk3B3QS9BZTXLK-JLi79zY8TOTqyrbEjo/exec", "https://api.vk.com/method/photos.get?owner_id=-58528824&v=5.92&album_id=228741307&access_token=3038692d3038692d3038692d5a300e7c7e330383038692d6cbb86b2e66a0ea7510a1261"
+					[ "https://script.google.com/macros/s/AKfycbz8lmBQ9bZyZp1pHA4eBARNS5LePfe0ThNFp1J9-0RA3vCpngTA/exec", "https://script.google.com/macros/s/AKfycbwfFzuMz7_LmAjKmCZk3B3QS9BZTXLK-JLi79zY8TOTqyrbEjo/exec"
+           // , "https://api.vk.com/method/photos.get?owner_id=-58528824&v=5.92&album_id=228741307&access_token=3038692d3038692d3038692d5a300e7c7e330383038692d6cbb86b2e66a0ea7510a1261"
 					].map(axios.get)
 				)
 				.then(
